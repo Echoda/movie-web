@@ -1,14 +1,8 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.less';
 
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
 
 export default function Login(props) {
     const onFinish = (values: any) => {
@@ -28,33 +22,33 @@ export default function Login(props) {
     };
     return (
         <Form
-            {...layout}
             name="basic"
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            className="login-form"
         >
+            <h2>登录</h2>
             <Form.Item
-                label="Username"
                 name="username"
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
-                <Input className="login-input" />
+                <Input className="login-input" prefix={<UserOutlined />}/>
             </Form.Item>
 
             <Form.Item
-                label="Password"
                 name="password"
                 rules={[{ required: true, message: 'Please input your password!' }]}
             >
-                <Input.Password className="login-input" />
+                <Input.Password className="login-input" prefix={<LockOutlined />} />
             </Form.Item>
 
-            <Form.Item {...tailLayout}>
+            <Form.Item >
                 <Button type="primary" htmlType="submit" className="login-submit" >
                     登录
                 </Button>
             </Form.Item>
+            <a href="jacascript:;">注册账户</a>
         </Form>
     )
 }
