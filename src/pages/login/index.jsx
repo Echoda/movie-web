@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd';
-// import './index.less';
+import './index.less';
 
 const layout = {
     labelCol: { span: 8 },
