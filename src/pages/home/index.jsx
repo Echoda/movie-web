@@ -160,7 +160,7 @@ export default function Home() {
     return (
         <div className="home">
             <div className="header">
-                <h2 className="title">电影点评网站</h2>
+                <a href="/home" className="title">电影点评网站</a>
                 <p className="header-right">
                     {isLogin ? (
                         <>
@@ -177,9 +177,9 @@ export default function Home() {
                 <Router>
                     <Switch>
                         <Route path="/home" exact component={Main} />
-                        <Route path="/home/:id" exact component={Comment} />
                         <Route path="/home/lasted" exact component={Lasted} />
                         <Route path="/home/favorite" exact component={Favorite} />
+                        <Route path="/home/:id" exact component={Comment} />
                     </Switch>
                 </Router>
             </div>
