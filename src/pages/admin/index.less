@@ -1,0 +1,63 @@
+.admin-page{
+
+    .header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #40A9FF;
+        color: #fff;
+        z-index: 100;
+
+        .title{
+            font-size: 24px;
+            margin: 7px 20px;
+            float: left;
+            color: inherit;
+        }
+
+        .tohome{
+            float: right;
+            color: #fff;
+            margin: 15px;
+        }
+    }
+
+    .middle{
+        position: absolute;
+        top: 50px;
+        bottom: 0;
+        width: 100%;
+
+        .menu{
+            width: 180px;
+            background-color: rgb(241, 241, 241);
+            padding: 0;
+            margin: 0;
+            height: 100%;
+
+            li{
+                list-style: none;
+                color: inherit;
+                font-size: 16px;
+                padding: 20px 0 20px 50px;
+
+                &:hover{
+                    background-color: #fff;
+                    border-right: 4px solid #40A9FF;
+                }
+            }
+        }
+
+        .main{
+            position: absolute;
+            top: 0;
+            left: 180px;
+            right: 0;
+            bottom: 0;
+        }
+
+        
+    }
+}
