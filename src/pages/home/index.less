@@ -1,0 +1,141 @@
+body{
+    overflow-x:hidden;
+}
+.home{
+    ul{
+        margin: 6px 0 20px 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    li{
+        list-style: none;
+        margin: 20px;
+    }
+
+    .header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #40A9FF;
+        color: #fff;
+        z-index: 100;
+
+        .title{
+            margin: 7px 20px;
+            float: left;
+            color: inherit;
+        }
+        .header-right{
+            margin: 15px;
+            float: right;
+            
+            span,
+            .admin{
+                padding: 0 5px;
+                cursor: pointer;
+                color: inherit;
+            }
+        }
+    }
+
+    .main{
+        position: relative;
+        top: 50px;
+        padding: 20px 40px;
+        overflow: hidden;
+
+        .lasted-header,
+        .favorite-header{
+            font-size: 20px;
+            color: #6e6e6e;
+
+            .subtitle{
+                margin-right: 5px;
+            }
+        }
+
+
+        .lasted{
+            margin-bottom: 40px;
+
+            ul{
+
+                li{
+                    width: 330px;
+                    height: 150px;
+
+
+                    img{
+                        float: left;
+                        margin-right: 10px;
+                        width: 100px;
+                    }
+                    .comment{
+                        text-indent: 40px;
+                        font-size: 16px;
+                        color: #333;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 5;
+                        overflow: hidden;
+                        margin-bottom: 5px;
+                        cursor: pointer;
+
+                        &:hover{
+                            color: #5fb6fd;
+                        }
+                    }
+
+                    .footer{
+                        font-size: 12px;
+                        color: #888;
+                        display: flex;
+                        align-items: center;
+
+                        .movie-name{
+                            display: inline-block;
+                            width: 70px;
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        .favorite{
+            li{
+                width: 150px;
+                position: relative;
+
+                
+                img{
+                    position: relative;
+                    width: 150px;
+                    cursor: pointer;
+                }
+                .star{
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    background-color: #74ab34;
+                    color: #fff;
+                    padding: 0 5px;
+                }
+            }
+        }
+    }
+
+    // .foter{
+    //     background-color: #40A9FF;
+    //     position: relative;
+    //     bottom: 0;
+    //     border-top: 1px solid #333;
+    // }
+}
