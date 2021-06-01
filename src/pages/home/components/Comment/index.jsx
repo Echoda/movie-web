@@ -1,10 +1,13 @@
 // 点击某个电影评论进入的某一电影下的评论列表
-import React from 'react';
+import React, { useState } from 'react';
 import { InputNumber, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import './index.less';
+import { withRouter } from 'react-router';
 
-export default function index() {
+export default function Comment() {
+    const [visible, setVisible] = useState(false)
+    const islogin = window.localStorage.getItem('islogin');
 
     const onStarChange = (val) => {
         console.log(val)
@@ -24,6 +27,24 @@ export default function index() {
         )
     }
 
+    const CreateComment = (props) => {
+        return (
+            <span className="write" onClick={() => { onClickCreate(props) }}>写影评</span>
+        )
+    }
+    const CreateCommentWrapper = withRouter(CreateComment)
+
+    const onClickCreate = (props) => {
+        if (islogin) {
+            setVisible(true)
+        } else {
+            props.history.push({
+                pathname: '/login',
+                state: props.location.pathname
+            });
+        }
+    }
+
     return (
         <div className="comment-page">
             <div className="movie">
@@ -38,14 +59,16 @@ export default function index() {
                 </div>
             </div>
             <div className="create-comment">
-                <p><EditOutlined /> <span className="write">写影评</span> <Button size="small">提交</Button></p>
-                <div className="toggle">
-                    <p>
-                        评分：<InputNumber size="small" min={1} max={10} defaultValue={6} onChange={onStarChange} />
-                    </p>
-                    <textarea name="comment" id="" cols="80" rows="6" className="text"></textarea>
-                </div>
-                
+                <p><EditOutlined /> <CreateCommentWrapper /> <Button size="small" onClick={() => setVisible(false)} disabled={!visible} >提交</Button></p>
+                {visible && (
+                    <div className="toggle">
+                        <p>
+                            评分：<InputNumber size="small" min={1} max={10} defaultValue={6} onChange={onStarChange} />
+                        </p>
+                        <textarea name="comment" id="" cols="80" rows="6" className="text"></textarea>
+                    </div>
+                )}
+
             </div>
             <div className="comment-list">
                 <ul>

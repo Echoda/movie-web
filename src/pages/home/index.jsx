@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom';
+import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import MovieList from './components/MovieList/index';
@@ -39,7 +39,7 @@ export default function Home() {
     const movieCard = ({ cover, star, id, ...rest }) => {
         return (
             <>
-                <img src={cover} onClick={() => rest.history.push(`/home/${id}`)}/>
+                <img src={cover} onClick={() => rest.history.push(`/home/${id}`)} />
                 <span className="star">{star}</span>
             </>
         )
@@ -160,7 +160,7 @@ export default function Home() {
     return (
         <div className="home">
             <div className="header">
-                <a href="/home" className="title">电影点评网站</a>
+                <Link to="/home" className="title">电影点评网站</Link>
                 <p className="header-right">
                     {isLogin ? (
                         <>
@@ -174,14 +174,12 @@ export default function Home() {
                 </p>
             </div>
             <div className="main">
-                <Router>
-                    <Switch>
-                        <Route path="/home" exact component={Main} />
-                        <Route path="/home/lasted" exact component={Lasted} />
-                        <Route path="/home/favorite" exact component={Favorite} />
-                        <Route path="/home/:id" exact component={Comment} />
-                    </Switch>
-                </Router>
+                <Switch>
+                    <Route path="/home/lasted" exact component={Lasted} />
+                    <Route path="/home/favorite" exact component={Favorite} />
+                    <Route path="/home/:id" exact component={Comment} />
+                    <Route path="/home" exact component={Main} />
+                </Switch>
             </div>
             {/* <div className="footer">
                 电影点评网站的设计与开发研究

@@ -12,8 +12,8 @@ const App = () => {
         <Router>
             <Switch>
                 <Route path="/home" component={Home} />
-                <Route path="/login"  component={Login} />
-                <ProtectedRoute path="/admin"  component={Admin} />
+                <Route path="/login" component={Login} />
+                <ProtectedRoute path="/admin" component={Admin} />
             </Switch>
         </Router>
     )
