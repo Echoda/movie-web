@@ -1,3 +1,4 @@
+// 点击 最新/最受欢迎 进入的列表页
 import React from 'react'
 import {Link, withRouter} from 'react-router-dom';
 import {Pagination} from 'antd';
