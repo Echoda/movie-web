@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom';
 import { Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import MovieList from './components/MovieList/index';
+import Comment from './components/Comment/index';
 import './index.less';
 
 const { Search } = Input;
@@ -21,29 +22,31 @@ export default function Home() {
     }
 
     // 最新影评 card
-    const CommentCard = ({ cover, comment, user, movieName }) => {
+    const CommentCard = ({ cover, comment, user, movieName, id, ...rest }) => {
         return (
             <>
                 <img src={cover} />
                 <div className="desc">
-                    <p className="comment">{comment}</p>
+                    <p className="comment" onClick={() => rest.history.push(`/home/${id}`)} >{comment}</p>
                     <p className="footer">{user} 评 《 <span className="movie-name">{movieName}</span> 》</p>
                 </div>
             </>
         )
     }
+    const CpmmentCardWrapper = withRouter(CommentCard);
 
-    const movieCard = ({ cover, star }) => {
+    // 最受欢迎 card
+    const movieCard = ({ cover, star, id, ...rest }) => {
         return (
             <>
-
-                <img src={cover} />
+                <img src={cover} onClick={() => rest.history.push(`/home/${id}`)}/>
                 <span className="star">{star}</span>
             </>
         )
     }
+    const movieCardWrapper = withRouter(movieCard);
 
-    const Main = () => {
+    const Main = (props) => {
         return (
             <>
                 <Search placeholder="搜索影片" onSearch={onSearch} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
@@ -59,7 +62,16 @@ export default function Home() {
                     </div>
                     <ul>
                         <li>
-                            {CommentCard({
+                            {CpmmentCardWrapper({
+                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
+                                movieName: '哆啦A梦：伴我同行2',
+                                user: 'nick',
+                                id: 1,
+                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
+                            })}
+                        </li>
+                        <li>
+                            {CpmmentCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
                                 movieName: '哆啦A梦：伴我同行2',
                                 user: 'nick',
@@ -67,7 +79,7 @@ export default function Home() {
                             })}
                         </li>
                         <li>
-                            {CommentCard({
+                            {CpmmentCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
                                 movieName: '哆啦A梦：伴我同行2',
                                 user: 'nick',
@@ -75,15 +87,7 @@ export default function Home() {
                             })}
                         </li>
                         <li>
-                            {CommentCard({
-                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
-                                movieName: '哆啦A梦：伴我同行2',
-                                user: 'nick',
-                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
-                            })}
-                        </li>
-                        <li>
-                            {CommentCard({
+                            {CpmmentCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
                                 movieName: '哆啦A梦：伴我同行2',
                                 user: 'nick',
@@ -104,37 +108,38 @@ export default function Home() {
                     </div>
                     <ul>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0'
+                                star: '9.0',
+                                id: 11
                             })}
                         </li>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '8.2'
                             })}
                         </li>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '9.0'
                             })}
                         </li>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '9.0'
                             })}
                         </li>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '9.0'
                             })}
                         </li>
                         <li>
-                            {movieCard({
+                            {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '9.0'
                             })}
@@ -146,10 +151,10 @@ export default function Home() {
     }
 
     const Lasted = () => {
-        return  MovieList('最新影评')
+        return MovieList('最新影评')
     };
     const Favorite = () => {
-        return  MovieList('最受欢迎')
+        return MovieList('最受欢迎')
     };
 
     return (
@@ -170,9 +175,12 @@ export default function Home() {
             </div>
             <div className="main">
                 <Router>
-                    <Route path="/home" exact component={Main} />
-                    <Route path="/home/lasted" exact component={Lasted} />
-                    <Route path="/home/favorite" exact component={Favorite} />
+                    <Switch>
+                        <Route path="/home" exact component={Main} />
+                        <Route path="/home/:id" exact component={Comment} />
+                        <Route path="/home/lasted" exact component={Lasted} />
+                        <Route path="/home/favorite" exact component={Favorite} />
+                    </Switch>
                 </Router>
             </div>
             {/* <div className="footer">
