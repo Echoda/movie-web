@@ -166,7 +166,7 @@ export default function Home() {
                         <>
                             <span>hi, nick</span>
                             <span onClick={onLogout}>退出</span>
-                            {isAdmin && <Link to="/admin" style={{ color: '#fff' }} >管理员后台</Link>}
+                            {isAdmin && <Link to="/admin/movielist" style={{ color: '#fff' }} >管理员后台</Link>}
                         </>
                     ) : (
                         <Link to="/login" style={{ color: '#fff' }}>登录</Link>
