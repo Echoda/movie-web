@@ -10,7 +10,7 @@ router.get(
     const page = req.query.page || 1;
     const limit = req.query.limit || 8;
     const name = req.query.name || '';
-    return await movieService.getUsers(page, limit, name);
+    return await movieService.getMovies(page, limit, name);
   })
 );
 
@@ -18,7 +18,7 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
-    return await movieService.getUserById(req.params.id);
+    return await movieService.getMovieById(req.params.id);
   })
 );
 
@@ -26,7 +26,7 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res, next) => {
-    return await movieService.addUser(req.body);
+    return await movieService.addMovie(req.body);
   })
 );
 
@@ -34,7 +34,7 @@ router.post(
 router.delete(
   "/:id",
   asyncHandler(async (req, res, next) => {
-    return await movieService.deleteUser(req.params.id);
+    return await movieService.deletMovie(req.params.id);
   })
 );
 
@@ -42,8 +42,10 @@ router.delete(
 router.put(
   "/:id",
   asyncHandler(async (req, res, next) => {
-    return await movieService.updateUser(req.params.id, req.body);
+    return await movieService.updateMovie(req.params.id, req.body);
   })
 );
 
 module.exports = router;
+
+// 测试 OK

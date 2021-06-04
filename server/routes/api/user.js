@@ -3,8 +3,6 @@ const router = express.Router();
 const userService = require("../../services/userService");
 const { asyncHandler } = require("../formResMiddleWare");
 
-// console.log('user api')
-
 // 获取列表
 router.get(
   "/",
@@ -19,6 +17,7 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
+      console.log('获取单个学生')
     return await userService.getUserById(req.params.id);
   })
 );
@@ -51,9 +50,10 @@ router.put(
 router.post(
     '/login',
     asyncHandler(async (req, res, next) => {
-        console.log(req.body);
-        // return await userService.login(req.body)
+        return await userService.login(req.body.username, req.body.userpwd)
     })
 )
 
 module.exports = router;
+
+// 接口测试 OK
