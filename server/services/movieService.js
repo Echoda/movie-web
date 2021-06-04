@@ -1,5 +1,39 @@
-import Movie from '../models/Movie';
+const Movie = require('../models/Movie')
 const { Op } = require("sequelize");
+
+// 查 列表
+exports.getMovies = async function (
+    page = 1,
+    limit = 10,
+    name = ""
+) {
+
+    const where = {};
+    if (name) {
+        where.name = {
+            [Op.like]: `%${name}%`,
+        };
+    }
+
+    const result = await Movie.findAndCountAll({
+        where,
+        offset: (page - 1) * limit,
+        limit: +limit,
+    });
+    return {
+        total: result.count,
+        datas: JSON.parse(JSON.stringify(result.rows)),
+    };
+};
+
+// 查 单个
+exports.getMovieById = async function (id) {
+    const result = await Movie.findByPk(id);
+    if (result) {
+        return result.toJSON();
+    }
+    return null;
+};
 
 // 增
 exports.addMovie = async function (movieObj) {
@@ -25,39 +59,5 @@ exports.updateMovie = async function (id, movieObj) {
         },
     });
     return result;
-};
-
-// 查 单个
-exports.getMovieById = async function (id) {
-    const result = await Movie.findByPk(id);
-    if (result) {
-        return result.toJSON();
-    }
-    return null;
-};
-
-// 查 多个
-exports.getMovies = async function (
-    page = 1,
-    limit = 10,
-    name = ""
-) {
-
-    const where = {};
-    if (name) {
-        where.name = {
-            [Op.like]: `%${name}%`,
-        };
-    }
-
-    const result = await Movie.findAndCountAll({
-        where,
-        offset: (page - 1) * limit,
-        limit: +limit,
-    });
-    return {
-        total: result.count,
-        datas: JSON.parse(JSON.stringify(result.rows)),
-    };
 };
 

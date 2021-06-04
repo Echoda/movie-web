@@ -7,3 +7,18 @@ exports.addAdmin = async function (adminObj) {
     const ins = await Admin.create(adminObj);
     return ins.toJSON();
 };
+
+// 管理员登录
+exports.login = async function (adminname, adminpwd) {
+    // adminpwd = md5(adminpwd)
+    const result = await Admin.findOne({
+        where: {
+            adminname,
+            adminpwd,
+        },
+    });
+    if (result && result.adminname === adminname) {
+        return result.toJSON();
+    }
+    return null;
+};

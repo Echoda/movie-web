@@ -1,23 +1,18 @@
-const sequelize = require('./models/db');
-const sync = require('./models/sync'); // 同步所有模型
-const adminService = require('./services/adminService');
+require('./init');
 
 
-// const adminService = require('./services/adminService');
-// const userService = require('./services/userService');
-
+// const sequelize = require('./models/db');
 
 // service测试
 // userService.login('Frank',2087390420).then(res => {
 //   console.log(res)
 // })
 
-
 // 管理员账号
-adminService.addAdmin({
-  adminname: 'lan.sun',
-  adminpwd: 990421,
-})
+// adminService.addAdmin({
+//   adminname: 'lan.sun',
+//   adminpwd: 990421,
+// })
 
 // 测试连接
 // (async () => {

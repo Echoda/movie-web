@@ -1,6 +1,40 @@
 const User = require("../models/User");
 // const md5 = require("md5");
 
+// 获取用户列表
+exports.getUsers = async function (
+    page = 1,
+    limit = 10,
+    // name = ""
+) {
+
+    // const where = {};
+    // if (name) {
+    //   where.name = {
+    //     [Op.like]: `%${name}%`,
+    //   };
+    // }
+
+    const result = await User.findAndCountAll({
+        //   where,
+        offset: (page - 1) * limit,
+        limit: +limit,
+    });
+    return {
+        total: result.count,
+        datas: JSON.parse(JSON.stringify(result.rows)),
+    };
+};
+
+// 获取某一个用户的信息
+exports.getUserById = async function (id) {
+    const result = await User.findByPk(id);
+    if (result) {
+        return result.toJSON();
+    }
+    return null;
+};
+
 // 注册新用户
 exports.addUser = async function (userObj) {
     // userObj.userpwd = md5(userObj.userpwd);
@@ -29,40 +63,6 @@ exports.updateUser = async function (id, userObj) {
         },
     });
     return result;
-};
-
-// 获取某一个用户的信息
-exports.getUserById = async function (id) {
-    const result = await User.findByPk(id);
-    if (result) {
-        return result.toJSON();
-    }
-    return null;
-};
-
-// 获取用户列表
-exports.getUsers = async function (
-    page = 1,
-    limit = 10,
-    // name = ""
-) {
-
-    // const where = {};
-    // if (name) {
-    //   where.name = {
-    //     [Op.like]: `%${name}%`,
-    //   };
-    // }
-
-    const result = await User.findAndCountAll({
-        //   where,
-        offset: (page - 1) * limit,
-        limit: +limit,
-    });
-    return {
-        total: result.count,
-        datas: JSON.parse(JSON.stringify(result.rows)),
-    };
 };
 
 
