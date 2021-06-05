@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import MovieList from './components/MovieList/index';
 import Comment from './components/Comment/index';
+import global from '../../global';
 import './index.less';
+
+import { getMovieList } from '../../services/movie';
 
 const { Search } = Input;
 
 export default function Home() {
-    const [isLogin, setIsLogin] = useState(true);
-    const [isAdmin, setIsAdmin] = useState(true);
+    const [lastedMovieList, setLastedMovieList] = useState([])
+    const [favoriteMovieList, setFavoriteMovieList] = useState([]);
+    const [isLogin, setIsLogin] = useState(global.userInfo);
+    const [isAdmin, setIsAdmin] = useState(isLogin && global.userInfo.role === 'admin');
+
+    useEffect(() => {
+        (async () => {
+            const lastedResult = await getMovieList(1, 6, '', 'createdAt');
+            const favoriteResult = await getMovieList(1, 6, '', 'star');
+            setLastedMovieList(lastedResult.data.data.datas);
+            setFavoriteMovieList(favoriteResult.data.data.datas);
+        })();
+    }, [])
 
     const onSearch = (value) => {
         console.log(value)
@@ -18,17 +32,17 @@ export default function Home() {
 
     const onLogout = () => {
         setIsLogin(false);
-        window.localStorage.removeItem('islogin');
+        global.userInfo = null;
     }
 
     // 最新影评 card
-    const CommentCard = ({ cover, comment, user, movieName, id, ...rest }) => {
+    const CommentCard = ({ cover, desc, country, movieName, id, ...rest }) => {
         return (
             <>
                 <img src={cover} />
                 <div className="desc">
-                    <p className="comment" onClick={() => rest.history.push(`/home/${id}`)} >{comment}</p>
-                    <p className="footer">{user} 评 《 <span className="movie-name">{movieName}</span> 》</p>
+                    <p className="comment" onClick={() => rest.history.push(`/home/${id}`)} >{desc}</p>
+                    <p className="footer">{country} 《<span className="movie-name">{movieName}</span>》 </p>
                 </div>
             </>
         )
@@ -50,50 +64,30 @@ export default function Home() {
         return (
             <>
                 <Search placeholder="搜索影片" onSearch={onSearch} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
-                {/* 最新影评 */}
+                {/* 最新 */}
                 <div className="lasted">
                     <div className="lasted-header">
                         <span className="subtitle">
-                            最新影评
+                            最近上映
                         </span>
                         <Link to="/home/lasted" >
                             <RightOutlined style={{ color: '#6e6e6e' }} />
                         </Link>
                     </div>
                     <ul>
-                        <li>
-                            {CpmmentCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
-                                movieName: '哆啦A梦：伴我同行2',
-                                user: 'nick',
-                                id: 1,
-                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
-                            })}
-                        </li>
-                        <li>
-                            {CpmmentCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
-                                movieName: '哆啦A梦：伴我同行2',
-                                user: 'nick',
-                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
-                            })}
-                        </li>
-                        <li>
-                            {CpmmentCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
-                                movieName: '哆啦A梦：伴我同行2',
-                                user: 'nick',
-                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
-                            })}
-                        </li>
-                        <li>
-                            {CpmmentCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/04/14/100352.99938324_1280X720X2.jpg',
-                                movieName: '哆啦A梦：伴我同行2',
-                                user: 'nick',
-                                comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod vel expedita earum nam. Recusandae sunt molestias quis quaerat! Ipsum laboriosam quod, assumenda perspiciatis suscipit deserunt nisi animi porro provident enim sapiente tenetur excepturi sed deleniti amet. Sint, repudiandae quos ut, fuga fugit voluptatibus nesciunt, ducimus ipsam assumenda maxime animi iusto?'
-                            })}
-                        </li>
+                        {lastedMovieList.map((it) => {
+                            return (
+                                <li>
+                                    {CpmmentCardWrapper({
+                                        cover: it.cover,
+                                        movieName: it.name,
+                                        country: it.country,
+                                        id: it.id,
+                                        desc: it.desc
+                                    })}
+                                </li>
+                            )
+                        })}
                     </ul>
                 </div>
                 {/* 最受欢迎 */}
@@ -107,14 +101,18 @@ export default function Home() {
                         </Link>
                     </div>
                     <ul>
-                        <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0',
-                                id: 11
-                            })}
-                        </li>
-                        <li>
+                        {favoriteMovieList.map((it) => {
+                            return (
+                                <li>
+                                    {movieCardWrapper({
+                                        cover: it.cover,
+                                        star: it.star,
+                                        id: it.id
+                                    })}
+                                </li>
+                            )
+                        })}
+                        {/* <li>
                             {movieCardWrapper({
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '8.2'
@@ -143,7 +141,7 @@ export default function Home() {
                                 cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
                                 star: '9.0'
                             })}
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </>
@@ -164,7 +162,7 @@ export default function Home() {
                 <p className="header-right">
                     {isLogin ? (
                         <>
-                            <span>hi, nick</span>
+                            <span>hi, {global.userInfo.name}</span>
                             <span onClick={onLogout}>退出</span>
                             {isAdmin && <Link to="/admin/movielist" style={{ color: '#fff' }} >管理员后台</Link>}
                         </>
@@ -181,9 +179,6 @@ export default function Home() {
                     <Route path="/home" exact component={Main} />
                 </Switch>
             </div>
-            {/* <div className="footer">
-                电影点评网站的设计与开发研究
-            </div> */}
         </div>
     )
 }

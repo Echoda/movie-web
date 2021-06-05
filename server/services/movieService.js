@@ -5,9 +5,9 @@ const { Op } = require("sequelize");
 exports.getMovies = async function (
     page = 1,
     limit = 10,
-    name = ""
+    name = "",
+    order = "id"
 ) {
-
     const where = {};
     if (name) {
         where.name = {
@@ -19,7 +19,11 @@ exports.getMovies = async function (
         where,
         offset: (page - 1) * limit,
         limit: +limit,
+        order: [
+            [order, 'DESC']
+        ]
     });
+
     return {
         total: result.count,
         datas: JSON.parse(JSON.stringify(result.rows)),

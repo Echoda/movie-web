@@ -9,9 +9,10 @@ require('./init');
 // })
 
 // 管理员账号
+// const adminService = require('./services/adminService')
 // adminService.addAdmin({
 //   adminname: 'lan.sun',
-//   adminpwd: 990421,
+//   adminpwd: '990421',
 // })
 
 // 测试连接

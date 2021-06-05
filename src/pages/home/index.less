@@ -100,7 +100,7 @@ body{
 
                         .movie-name{
                             display: inline-block;
-                            width: 70px;
+                            max-width: 70px;
                             overflow: hidden;
                             text-overflow:ellipsis;
                             white-space: nowrap;
@@ -115,11 +115,14 @@ body{
             li{
                 width: 150px;
                 position: relative;
+                width: 150px;
+                height: 225px;
+                overflow: hidden;
 
                 
                 img{
                     position: relative;
-                    width: 150px;
+                    height: 225px;
                     cursor: pointer;
                 }
                 .star{

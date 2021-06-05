@@ -10,7 +10,9 @@ router.get(
     const page = req.query.page || 1;
     const limit = req.query.limit || 8;
     const name = req.query.name || '';
-    return await movieService.getMovies(page, limit, name);
+    const order = req.query.order || '';
+    console.log(req.query);
+    return await movieService.getMovies(page, limit, name, order);
   })
 );
 

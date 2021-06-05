@@ -7,8 +7,7 @@ const { asyncHandler } = require("../formResMiddleWare");
 router.post(
     '/login',
     asyncHandler(async (req, res, next) => {
-        console.log(req.body);
-        // return await adminService.login(req.body)
+        return await adminService.login(req.body.name,req.body.pwd);
     })
 )
 

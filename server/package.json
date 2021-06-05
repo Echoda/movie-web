@@ -21,6 +21,7 @@
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
+    "http-proxy-middleware": "^2.0.0",
     "nodemon": "^2.0.7"
   }
 }

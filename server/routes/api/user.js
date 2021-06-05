@@ -50,7 +50,7 @@ router.put(
 router.post(
     '/login',
     asyncHandler(async (req, res, next) => {
-        return await userService.login(req.body.username, req.body.userpwd)
+        return await userService.login(req.body.name, req.body.pwd)
     })
 )
 

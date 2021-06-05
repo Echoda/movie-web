@@ -10,7 +10,9 @@ exports.addAdmin = async function (adminObj) {
 
 // 管理员登录
 exports.login = async function (adminname, adminpwd) {
-    // adminpwd = md5(adminpwd)
+    adminpwd = md5(adminpwd)
+    console.log(md5('990421'))
+    console.log(adminname, adminpwd)
     const result = await Admin.findOne({
         where: {
             adminname,
