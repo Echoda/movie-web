@@ -9,49 +9,53 @@
     }
     
     .comment-list{
-        li{
-            list-style: none;
-            padding: 30px 0 0 20px;
-            // margin-bottom: 0;
-            border-top: 1px solid rgb(214, 214, 214);
-    
-            img{
-                width: 150px;
-                float: left;
-                margin-right: 20px;
-            }
-    
-            .desc{
-                width: 800px;
-    
-                .nickname{
-                    display: inline-block;
-                    color: #333;
-                    font-size: 18px;
-                    margin-top: 10px;
-                }
-    
-                .time{
-                    color: rgb(185, 184, 184);
-                }
-    
-                .star{
-                    background-color: #74ab34;
-                    color: #fff;
-                    padding: 0 5px;
-                }
-                
-                .comment{
-                    text-indent: 20px;
-                    margin-top: 20px;
-                    display: -webkit-box;
-                    -webkit-box-orient: vertical;
-                    -webkit-line-clamp: 5;
-                    overflow: hidden;
-                    cursor: pointer;
+        margin: 0;
+        padding-right: 30px;
 
-                    &:hover{
-                        color: #b1b1b1;
+        li{
+            margin: 10px;
+            list-style: none;
+            padding-top: 30px;
+            border-top: 1px solid rgb(214, 214, 214);
+
+            .movie{
+                margin-bottom: 40px;
+        
+                .title{
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: #494949;
+                }
+                .info{
+                    img{
+                        height: 225px;
+                        float: left;
+                        margin-right: 20px;
+                        cursor: pointer;
+                    }
+                    &>p{
+                        font-size: 14px;
+                        color: #666;  
+                        
+                        span{
+                            color: #111;
+                        }
+                    }
+
+                    .star{
+                        span{
+                            background-color: #74ab34;
+                            color: #fff;
+                            padding: 0 5px;
+                        }
+                        
+                    }
+            
+                    .desc{
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 4;
+                        overflow: hidden;
                     }
                 }
             }

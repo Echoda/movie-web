@@ -35,7 +35,7 @@ export default function Home() {
         global.userInfo = null;
     }
 
-    // 最新影评 card
+    // 最新 card
     const CommentCard = ({ cover, desc, country, movieName, id, ...rest }) => {
         return (
             <>
@@ -64,11 +64,11 @@ export default function Home() {
         return (
             <>
                 <Search placeholder="搜索影片" onSearch={onSearch} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
-                {/* 最新 */}
+                {/*最新推荐 */}
                 <div className="lasted">
                     <div className="lasted-header">
                         <span className="subtitle">
-                            最近上映
+                            最新推荐
                         </span>
                         <Link to="/home/lasted" >
                             <RightOutlined style={{ color: '#6e6e6e' }} />
@@ -112,36 +112,6 @@ export default function Home() {
                                 </li>
                             )
                         })}
-                        {/* <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '8.2'
-                            })}
-                        </li>
-                        <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0'
-                            })}
-                        </li>
-                        <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0'
-                            })}
-                        </li>
-                        <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0'
-                            })}
-                        </li>
-                        <li>
-                            {movieCardWrapper({
-                                cover: 'http://img5.mtime.cn/mt/2021/05/20/091102.74956843_1280X720X2.jpg',
-                                star: '9.0'
-                            })}
-                        </li> */}
                     </ul>
                 </div>
             </>
@@ -149,7 +119,7 @@ export default function Home() {
     }
 
     const Lasted = () => {
-        return MovieList('最新影评')
+        return MovieList('最新推荐')
     };
     const Favorite = () => {
         return MovieList('最受欢迎')

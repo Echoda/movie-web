@@ -1,13 +1,25 @@
 // 点击某个电影评论进入的某一电影下的评论列表
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputNumber, Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import './index.less';
+import global from '../../../../global';
+import {getMovie} from '../../../../services/movie';
 import { withRouter } from 'react-router';
 
-export default function Comment() {
+export default function Comment(props) {
+    const [movie, setMovie] = useState([]);
     const [visible, setVisible] = useState(false)
-    const islogin = window.localStorage.getItem('islogin');
+    const [commentList, setCommentList] = useState([]);
+    const islogin = global.userInfo;
+    const id = props.match.params.id;
+
+    useEffect(() => {
+        (async () => {
+            const res = await getMovie(id);
+            setMovie(res.data.data);
+        })();
+    }, [id])
 
     const onStarChange = (val) => {
         console.log(val)
@@ -45,17 +57,19 @@ export default function Comment() {
         }
     }
 
+    const {name, cover, sort, country, publishTime, star, desc} = movie;
+
     return (
         <div className="comment-page">
             <div className="movie">
-                <p className="title">潜艇总动员：地心游记</p>
+                <p className="title">{name}</p>
                 <div className="info">
-                    <img src="http://img5.mtime.cn/mt/2021/01/29/160259.71072536_1280X720X2.jpg" alt="" />
-                    <p className="sort">类型：<span>冒险</span></p>
-                    <p className="country">制片国家、地区：<span>欧美</span></p>
-                    <p className="ctime">上映时间：<span>2021</span></p>
-                    <p className="star">评分：<span>8.2</span></p>
-                    <p className="desc">简介：<span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, inventore eius maxime dolorem delectus voluptas eos, iusto quae corporis possimus temporibus totam a tenetur aperiam. Voluptate, voluptas quam. Debitis praesentium distinctio expedita? Iste excepturi esse minima expedita! Tempore reiciendis aut maxime doloremque a iusto excepturi atque dolorem consequatur, sed officia. Tempora quos, et, voluptate deleniti, reprehenderit beatae nemo nam tenetur minus nisi sapiente ratione? Placeat rem iusto ducimus rerum temporibus est. Similique error at blanditiis possimus fuga corporis ab doloremque sapiente delectus? Inventore ducimus unde, cum laborum ab repellat obcaecati magni suscipit earum quia magnam praesentium dicta velit qui error, non debitis totam libero, quasi temporibus. Officia doloremque dicta similique distinctio dolorum tempora corrupti iusto reprehenderit eius exercitationem quidem odio nisi quasi natus, eos nam. Repudiandae placeat, similique amet, at aut ipsam esse ratione repellendus libero enim accusamus minima non quo reiciendis rem nulla ipsum illo. Modi possimus ipsum officia exercitationem! Dolore quam consequuntur officiis illo, a minima repellendus voluptatibus nesciunt odio asperiores rerum sit voluptatum fuga blanditiis fugiat minus sunt cum dolor commodi provident, omnis esse molestiae? Dolorem inventore eligendi illo provident natus nihil obcaecati similique pariatur nostrum! At, rem nisi amet dolorum sequi blanditiis labore! Aspernatur, unde quia!</span></p>
+                    <img src={cover} />
+                    <p className="sort">类型：<span>{sort}</span></p>
+                    <p className="country">制片国家、地区：<span>{country}</span></p>
+                    <p className="ctime">上映时间：<span>{publishTime}</span></p>
+                    <p className="star">评分：<span>{star || '暂无评分'}</span></p>
+                    <p className="desc">简介：<span>{desc}</span></p>
                 </div>
             </div>
             <div className="create-comment">
