@@ -65,7 +65,6 @@ export default function Comment(props) {
 
     const onSubmit = async () => {
         setVisible(false);
-        console.log(comContent, comStar, 'movieId:', movieId, 'userId:', userId);
         try {
             await createComments(comContent, comStar, movieId, userId);
             message.success('提交成功')
@@ -76,7 +75,6 @@ export default function Comment(props) {
     }
 
     const onStarChange = (val) => {
-        console.log(val)
         setComStar(val);
     }
 

@@ -47,7 +47,7 @@ function CommentList(list) {
     )
 }
 
-export default function MovieList(title) {
+export default function MovieList(title, props = {}) {
 
     const [list, setList] = useState([]);
     const [cPage, setCPage] = useState(1);
@@ -56,10 +56,9 @@ export default function MovieList(title) {
 
     useEffect(() => {
         (async () => {
-            const res = await getMovieList(cPage, 6, '', order);
+            const res = title === '搜索' ? await getMovieList(cPage, 6, props.match.params.key, order) : await getMovieList(cPage, 6, '', order);
             setList(res.data.data.datas);
             setTotal(res.data.data.total);
-            console.log(total, 'total')
         })();
     }, [cPage, order])
 
@@ -71,7 +70,7 @@ export default function MovieList(title) {
                 </Link>
                 <span>{title}</span>
             </p>
-            {CommentList(list)}
+            {list.length ? CommentList(list) : '暂无匹配结果'}
             <Pagination 
             showLessItems={true} 
             defaultCurrent={1}
@@ -79,6 +78,7 @@ export default function MovieList(title) {
             style={{ marginLeft: 200 }} 
             onChange={(page) => setCPage(page)}
             pageSize={6}
+            hideOnSinglePage={true}
              />
         </div>
     )

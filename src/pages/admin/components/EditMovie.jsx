@@ -6,7 +6,6 @@ export default function EditMovie(props) {
     const [movieInfo, setMovieInfo] = useState({});
     const [form] = Form.useForm();
     const movieId = props.match.params.id;
-    console.log(props);
 
     useEffect(() => {
         movieId && (async () => {
@@ -16,7 +15,6 @@ export default function EditMovie(props) {
     }, [movieId])
 
     const { name, sort, cover, country, desc, publishTime } = movieInfo;
-    console.log(movieInfo)
     movieInfo && form.setFieldsValue({
         name,
         sort,
@@ -32,7 +30,6 @@ export default function EditMovie(props) {
     };
 
     const onFinish = async (values: any) => {
-        console.log(values);
         try {
             if (movieId) {
                 await updateMovie(movieId, values);

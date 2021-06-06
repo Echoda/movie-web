@@ -10,7 +10,7 @@ import { getMovieList } from '../../services/movie';
 
 const { Search } = Input;
 
-export default function Home() {
+export default function Home(props) {
     const [lastedMovieList, setLastedMovieList] = useState([])
     const [favoriteMovieList, setFavoriteMovieList] = useState([]);
 
@@ -27,8 +27,8 @@ export default function Home() {
         })();
     }, [])
 
-    const onSearch = (value) => {
-        console.log(value)
+    const handleSearch = (value) => {
+        props.history.push(`/home/search/${value}`)
     }
 
     const onLogout = () => {
@@ -64,7 +64,6 @@ export default function Home() {
     const Main = (props) => {
         return (
             <>
-                <Search placeholder="搜索影片" onSearch={onSearch} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
                 {/*最新推荐 */}
                 <div className="lasted">
                     <div className="lasted-header">
@@ -125,6 +124,9 @@ export default function Home() {
     const Favorite = () => {
         return MovieList('最受欢迎')
     };
+    const SearchCom = (props) => {
+        return MovieList('搜索', props)
+    }
 
     return (
         <div className="home">
@@ -143,9 +145,11 @@ export default function Home() {
                 </p>
             </div>
             <div className="main">
+                <Search placeholder="搜索影片" onSearch={(v) => handleSearch(v)} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
                 <Switch>
                     <Route path="/home/lasted" exact component={Lasted} />
                     <Route path="/home/favorite" exact component={Favorite} />
+                    <Route path="/home/search/:key" exact component={SearchCom} />
                     <Route path="/home/:id" exact component={Comment} />
                     <Route path="/home" exact component={Main} />
                 </Switch>
