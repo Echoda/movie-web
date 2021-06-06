@@ -66,7 +66,7 @@ export default function Comment(props) {
     const onSubmit = async () => {
         setVisible(false);
         try {
-            await createComments(comContent, comStar, movieId, userId);
+            await createComments(comContent, comStar || 6, movieId, userId);
             message.success('提交成功')
             getCommentList(movieId);
         } catch {
