@@ -4,7 +4,6 @@ import { Input } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import MovieList from './components/MovieList/index';
 import Comment from './components/Comment/index';
-import global from '../../global';
 import './index.less';
 
 import { getMovieList } from '../../services/movie';

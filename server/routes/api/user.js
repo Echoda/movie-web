@@ -17,7 +17,6 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
-      console.log('获取单个学生')
     return await userService.getUserById(req.params.id);
   })
 );

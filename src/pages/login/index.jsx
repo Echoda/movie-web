@@ -2,7 +2,6 @@ import React from 'react'
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { getLoginInfo, adminLogin, userLogin } from '../../services/login';
-import global from '../../global';
 import './index.less';
 
 
@@ -22,12 +21,6 @@ export default function Login(props) {
                 id: isAdmin.id
             }
             window.localStorage.setItem('userInfo', JSON.stringify(info));
-            // global.userInfo = {
-            //     role: 'admin',
-            //     name: isAdmin.adminname,
-            //     pwd: isAdmin.adminpwd,
-            //     id: isAdmin.id
-            // }
         }
 
         // 是否一般用户
@@ -52,7 +45,6 @@ export default function Login(props) {
         } else {
             message.error('用户名或密码错误');
         }
-        console.log(global);
     };
 
     const onFinishFailed = async (errorInfo: any) => {

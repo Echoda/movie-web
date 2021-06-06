@@ -6,7 +6,7 @@ export default function ProtectedRoute({component: Component, children, render, 
     return (
         <Route  {...rest}
         render={values => {
-            if(window.localStorage.getItem('islogin')){
+            if(window.localStorage.getItem('userInfo')){
                 return <Component />
             } else {
                 return <Redirect to={{

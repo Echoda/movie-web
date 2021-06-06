@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { InputNumber, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import './index.less';
-import global from '../../../../global';
 import { getMovie } from '../../../../services/movie';
 import { getComments, createComments } from '../../../../services/comment';
 import { withRouter } from 'react-router';
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 
 export default function Comment(props) {
     const [movie, setMovie] = useState([]);
@@ -16,17 +15,21 @@ export default function Comment(props) {
     const [comStar, setComStar] = useState('');
     const [comContent, setComContent] = useState('');
     const loginInfo = JSON.parse(window.localStorage.getItem('userInfo'));
-    const userId = loginInfo.id;
+    const userId = loginInfo && loginInfo.id;
     const movieId = props.match.params.id;
 
     useEffect(() => {
         (async () => {
-            const res = await getMovie(movieId);
-            setMovie(res.data.data);
-            const comRes = await getComments(movieId);
-            setCommentList(comRes.data.data.datas);
+            getCommentList(movieId)
         })();
     }, [movieId])
+
+    const getCommentList = async (movieId) => {
+        const res = await getMovie(movieId);
+        setMovie(res.data.data);
+        const comRes = await getComments(movieId);
+        setCommentList(comRes.data.data.datas);
+    }
 
     const comment = ({ user, star, ctime, comment }) => {
         return (
@@ -66,6 +69,7 @@ export default function Comment(props) {
         try {
             await createComments(comContent, comStar, movieId, userId);
             message.success('提交成功')
+            getCommentList(movieId);
         } catch {
             message.error('评论失败，请稍后重试');
         }

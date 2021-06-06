@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 分页获取movie列表
 export const getMovieList = (page, limit, name, order) => {
-    return axios.get(`/api/movie?page=${page}&limit=${limit}&name=${name}&order=${order}`);
+    return axios.get(`/api/movie?page=${page}&limit=${limit}&name=${name || ''}&order=${order || 'id'}`);
 }
 
 // 获取单个movie

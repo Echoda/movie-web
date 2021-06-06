@@ -1,71 +1,83 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Space } from 'antd';
 import { Link } from 'react-router-dom';
+import { getMovieList } from '../../../../services/movie';
 
 export default function MovieList() {
+    const [movieList, setMovieList] = useState([]);
+    const [cPage, setCPage] = useState(1);
+    const [total, setTotal] = useState(0);
 
-
-    const dataSource = [
-        {
-            movieId: '1',
-            name: '千与千寻',
-            sort: '动漫',
-            country: '日本',
-            desc: '治愈动画',
-            cover: '',
-            cTime: '2021-2-2'
-        },
-        {
-            id: '2',
-            name: '借东西的艾莉小人',
-            sort: '动漫',
-            country: '日本',
-            desc: 'desc',
-            cover: '',
-            cTime: '2021-2-2'
-        },
-    ];
+    useEffect(() => {
+        (async () => {
+            const res = await getMovieList(cPage, 8);
+            setMovieList(res.data.data.datas);
+            setTotal(res.data.data.total);
+        })();
+    }, [cPage])
 
     const columns = [
         {
-            title: '名称',
+            title: 'id',
+            dataIndex: 'id',
+            key: 'id',
+            width: 50,
+        },
+        {
+            title: '影片名称',
             dataIndex: 'name',
             key: 'name',
+            width: 150
         },
         {
             title: '类型',
             dataIndex: 'sort',
             key: 'sort',
+            width: 100
         },
         {
             title: '国家',
             dataIndex: 'country',
             key: 'country',
+            width: 100
         },
         {
             title: '描述',
             dataIndex: 'desc',
             key: 'desc',
+            ellipsis: true,
         },
         {
             title: '上映时间',
-            dataIndex: 'cTime',
-            key: 'cTime',
+            dataIndex: 'publishTime',
+            key: 'publishTime',
+            width: 150
         },
         {
             title: '操作',
             key: 'action',
+            width: 80,
             render: (text) => (
-                <Space size="middle">
-                    <Link to={`/admin/movielist/edit/id=${text.movieId}`}>编辑</Link>
-                    <Link to={`/admin/movielist/comments/id=${text.movieId}`}>查看影评</Link>
-                </Space>
-
+                <Link to={`/admin/movielist/edit/id=${text.id}`}>编辑</Link>
             ),
         },
     ];
 
     return (
-        <Table dataSource={dataSource} columns={columns} bordered/>
+        <>
+            <h2>影片列表</h2>
+            <Table
+                dataSource={movieList}
+                columns={columns}
+                pagination={{
+                    total: total,
+                    pageSize: 8,
+                    onChange: (val) => {
+                        setCPage(val);
+                    }
+                }}
+                bordered
+            />
+        </>
     )
 }

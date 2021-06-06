@@ -1,30 +1,46 @@
-import React from 'react'
-import { Table, Space } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { message, Table } from 'antd';
+import { getUserList, deleteUser } from '../../../../services/user';
+import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 export default function MovieList() {
+    const [userList, setUserList] = useState([]);
+    const [cPage, setCPage] = useState(1);
+    const [total, setTotal] = useState(0);
 
+    useEffect(() => {
+        (async () => {
+            await getUsers(cPage, 8);
+        })();
+    }, [cPage])
 
-    const dataSource = [
-        {
-            userId: '1',
-            name: 'nick',
-            email: '111@qq.com',
-            cTime: '2021-2-2'
-        },
-        {
-            userId: '2',
-            name: 'sunny',
-            email: '222@qq.com',
-            cTime: '2021-1-2'
+    const getUsers = async () => {
+        const res = await getUserList(cPage, 8);
+        setUserList(res.data.data.datas);
+        setTotal(res.data.data.total);
+    }
+
+    const toDelete = async (id) => {
+        try {
+            await deleteUser(id);
+            message.success('用户注销成功')
+            getUsers(cPage, 8);
+        } catch {
+            message.error('用户注销失败')
         }
-    ];
+    }
 
     const columns = [
         {
-            title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'id',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: '用户名',
+            dataIndex: 'username',
+            key: 'username',
         },
         {
             title: '邮箱',
@@ -33,20 +49,37 @@ export default function MovieList() {
         },
         {
             title: '创建时间',
-            dataIndex: 'cTime',
-            key: 'cTime',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (text) => {
+                return format(new Date(text), 'yyyy-MM-dd HH:mm:ss');
+            }
         },
         {
             title: '操作',
             key: 'action',
             render: (text) => (
-                    <a>注销</a>
+                <a onClick={() => toDelete(text.id)}>注销</a>
 
             ),
         },
     ];
 
     return (
-        <Table dataSource={dataSource} columns={columns} bordered/>
+        <>
+            <h2>用户列表</h2>
+            <Table
+                dataSource={userList}
+                columns={columns}
+                pagination={{
+                    total: total,
+                    pageSize: 8,
+                    onChange: (val) => {
+                        setCPage(val);
+                    }
+                }}
+                bordered
+            />
+        </>
     )
 }
