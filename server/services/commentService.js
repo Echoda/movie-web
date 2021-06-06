@@ -1,21 +1,47 @@
 const Comment = require("../models/Comment");
+const User = require("../models/User");
+require('../models/relation');
 
-// 根据movieId获取评论列表
+const getUserName = async(it,id) => {
+    const user = await User.findOne({
+        where: {
+            id: id
+        },
+    });
+    const username = user.toJSON().username;
+    it = {
+        ...it,
+        username: username
+    };
+    return it;
+}
+
+// 根据movieId获取评论列表 不做分页
 exports.getComments = async function (
-    page = 1,
-    limit = 10,
+    // page = 1,
+    // limit = 10,
     movieId = ""
 ) {
     const result = await Comment.findAndCountAll({
+        order: [
+            ['createdAt', 'DESC']
+        ],
+        attributes: ['content', 'createdAt', 'UserId', 'star'],
         where: {
             movieId: movieId,
         },
-        offset: (page - 1) * limit,
-        limit: +limit,
     });
+
+    const proList = [];
+    const res = [...JSON.parse(JSON.stringify(result.rows))];
+    res.forEach((it) => {
+        proList.push(getUserName(it, it.UserId));
+    })
+    const proResult = await Promise.all(proList).then(res =>  res);
+    
     return {
         total: result.count,
-        datas: JSON.parse(JSON.stringify(result.rows)),
+        datas: proResult
     };
 };
 

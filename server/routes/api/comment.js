@@ -7,10 +7,8 @@ const { asyncHandler } = require("../formResMiddleWare");
 router.get(
   "/",
   asyncHandler(async (req, res) => {
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 8;
     const movieId = req.query.movieId || 0;
-    return await commentService.getComments(page, limit, movieId);
+    return await commentService.getComments(movieId);
   })
 );
 
@@ -26,6 +24,7 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res, next) => {
+    console.log(req.body)
     return await commentService.addComment(req.body);
   })
 );

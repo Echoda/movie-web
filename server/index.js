@@ -1,6 +1,5 @@
 require('./init');
 
-
 // const sequelize = require('./models/db');
 
 // service测试

@@ -5,6 +5,7 @@ const global = {};
 //         role: admin / user
 //         name: '',
 //         pwd: ''
+//         id: 
 //     }
 // }
 

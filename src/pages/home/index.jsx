@@ -14,8 +14,10 @@ const { Search } = Input;
 export default function Home() {
     const [lastedMovieList, setLastedMovieList] = useState([])
     const [favoriteMovieList, setFavoriteMovieList] = useState([]);
-    const [isLogin, setIsLogin] = useState(global.userInfo);
-    const [isAdmin, setIsAdmin] = useState(isLogin && global.userInfo.role === 'admin');
+
+    const userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+    const [isLogin, setIsLogin] = useState(userInfo);
+    const isAdmin = isLogin && userInfo.role === 'admin';
 
     useEffect(() => {
         (async () => {
@@ -32,7 +34,7 @@ export default function Home() {
 
     const onLogout = () => {
         setIsLogin(false);
-        global.userInfo = null;
+        window.localStorage.removeItem('userInfo');
     }
 
     // 最新 card
@@ -77,7 +79,7 @@ export default function Home() {
                     <ul>
                         {lastedMovieList.map((it) => {
                             return (
-                                <li>
+                                <li key={it.cover}>
                                     {CpmmentCardWrapper({
                                         cover: it.cover,
                                         movieName: it.name,
@@ -103,7 +105,7 @@ export default function Home() {
                     <ul>
                         {favoriteMovieList.map((it) => {
                             return (
-                                <li>
+                                <li key={it.cover}>
                                     {movieCardWrapper({
                                         cover: it.cover,
                                         star: it.star,
@@ -132,7 +134,7 @@ export default function Home() {
                 <p className="header-right">
                     {isLogin ? (
                         <>
-                            <span>hi, {global.userInfo.name}</span>
+                            <span>hi, {userInfo.name}</span>
                             <span onClick={onLogout}>退出</span>
                             {isAdmin && <Link to="/admin/movielist" style={{ color: '#fff' }} >管理员后台</Link>}
                         </>

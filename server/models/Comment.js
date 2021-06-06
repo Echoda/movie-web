@@ -1,5 +1,7 @@
 const sequelize = require("./db");
 const { DataTypes } = require("sequelize");
+require('./Movie');
+require('./User')
 
 //创建一个模型对象
 const Comment = sequelize.define(
@@ -7,6 +9,10 @@ const Comment = sequelize.define(
   {
     content: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    star: {
+      type: DataTypes.STRING,
       allowNull: false,
     }
   },

@@ -20,7 +20,6 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
-    console.log(req.params, 'paeams')
     return await movieService.getMovieById(req.params.id);
   })
 );

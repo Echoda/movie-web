@@ -15,22 +15,32 @@ export default function Login(props) {
         const adminInfo = await adminLogin(username, password);
         const isAdmin = adminInfo.data.data;
         if(isAdmin){
-            global.userInfo = {
+            const info = {
                 role: 'admin',
                 name: isAdmin.adminname,
-                pwd: isAdmin.adminpwd
+                pwd: isAdmin.adminpwd,
+                id: isAdmin.id
             }
+            window.localStorage.setItem('userInfo', JSON.stringify(info));
+            // global.userInfo = {
+            //     role: 'admin',
+            //     name: isAdmin.adminname,
+            //     pwd: isAdmin.adminpwd,
+            //     id: isAdmin.id
+            // }
         }
 
         // 是否一般用户
         const userInfo = !isAdmin && await userLogin(username, password);
         const isUser = userInfo && userInfo.data.data;
         if(isUser){
-            global.userInfo = {
+            const info = {
                 role: 'user',
                 name: isUser.username,
-                pwd: isUser.userpwd
+                pwd: isUser.userpwd,
+                id: isUser.id
             }
+            window.localStorage.setItem('userInfo', JSON.stringify(info));
         }
 
         if (isAdmin || isUser) {
@@ -42,6 +52,7 @@ export default function Login(props) {
         } else {
             message.error('用户名或密码错误');
         }
+        console.log(global);
     };
 
     const onFinishFailed = async (errorInfo: any) => {

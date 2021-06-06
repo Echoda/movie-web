@@ -1,29 +1,32 @@
 // 点击某个电影评论进入的某一电影下的评论列表
 import React, { useState, useEffect } from 'react';
-import { InputNumber, Button } from 'antd';
+import { InputNumber, Button, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import './index.less';
 import global from '../../../../global';
-import {getMovie} from '../../../../services/movie';
+import { getMovie } from '../../../../services/movie';
+import { getComments, createComments } from '../../../../services/comment';
 import { withRouter } from 'react-router';
+import {format} from 'date-fns';
 
 export default function Comment(props) {
     const [movie, setMovie] = useState([]);
     const [visible, setVisible] = useState(false)
     const [commentList, setCommentList] = useState([]);
-    const islogin = global.userInfo;
-    const id = props.match.params.id;
+    const [comStar, setComStar] = useState('');
+    const [comContent, setComContent] = useState('');
+    const loginInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+    const userId = loginInfo.id;
+    const movieId = props.match.params.id;
 
     useEffect(() => {
         (async () => {
-            const res = await getMovie(id);
+            const res = await getMovie(movieId);
             setMovie(res.data.data);
+            const comRes = await getComments(movieId);
+            setCommentList(comRes.data.data.datas);
         })();
-    }, [id])
-
-    const onStarChange = (val) => {
-        console.log(val)
-    }
+    }, [movieId])
 
     const comment = ({ user, star, ctime, comment }) => {
         return (
@@ -47,7 +50,7 @@ export default function Comment(props) {
     const CreateCommentWrapper = withRouter(CreateComment)
 
     const onClickCreate = (props) => {
-        if (islogin) {
+        if (loginInfo) {
             setVisible(true)
         } else {
             props.history.push({
@@ -57,7 +60,27 @@ export default function Comment(props) {
         }
     }
 
-    const {name, cover, sort, country, publishTime, star, desc} = movie;
+    const onSubmit = async () => {
+        setVisible(false);
+        console.log(comContent, comStar, 'movieId:', movieId, 'userId:', userId);
+        try {
+            await createComments(comContent, comStar, movieId, userId);
+            message.success('提交成功')
+        } catch {
+            message.error('评论失败，请稍后重试');
+        }
+    }
+
+    const onStarChange = (val) => {
+        console.log(val)
+        setComStar(val);
+    }
+
+    const onTextChange = (val) => {
+        setComContent(val);
+    }
+
+    const { name, cover, sort, country, publishTime, star, desc } = movie;
 
     return (
         <div className="comment-page">
@@ -73,51 +96,31 @@ export default function Comment(props) {
                 </div>
             </div>
             <div className="create-comment">
-                <p><EditOutlined /> <CreateCommentWrapper /> <Button size="small" onClick={() => setVisible(false)} disabled={!visible} >提交</Button></p>
+                <p><EditOutlined /> <CreateCommentWrapper /> <Button size="small" onClick={onSubmit} disabled={!visible} >提交</Button></p>
                 {visible && (
                     <div className="toggle">
                         <p>
                             评分：<InputNumber size="small" min={1} max={10} defaultValue={6} onChange={onStarChange} />
                         </p>
-                        <textarea name="comment" id="" cols="80" rows="6" className="text"></textarea>
+                        <textarea name="comment" id="" cols="80" rows="6" className="text" onChange={(e) => onTextChange(e.target.value)}></textarea>
                     </div>
                 )}
 
             </div>
             <div className="comment-list">
                 <ul>
-                    <li>
-                        {comment({
-                            user: 'nickk',
-                            star: '8.9',
-                            ctime: '2021/2/2 12:12:12',
-                            comment: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae commodi, placeat magni earum dolor a error voluptatum unde eos ducimus, obcaecati, ratione asperiores sit ad quaerat corporis? Voluptates vitae facilis maiores provident laudantium ipsum asperiores magni, eveniet nam vero, debitis saepe, officia perferendis accusamus quia dicta. Voluptate, distinctio qui sed dolorum error quas debitis id cum doloremque quaerat deserunt quia eos! Ipsa nesciunt similique repellat laudantium nihil natus possimus blanditiis. Accusamus, soluta iste! Molestiae vitae odio corrupti laborum sapiente. Ab aut labore eius unde dignissimos fugiat vero sapiente necessitatibus numquam in fuga quas rem ratione quidem, distinctio dicta animi neque'
-                        })}
-                    </li>
-                    <li>
-                        {comment({
-                            user: 'nickk',
-                            star: '8.9',
-                            ctime: '2021/2/2 12:12:12',
-                            comment: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae commodi, placeat magni earum dolor a error voluptatum unde eos ducimus, obcaecati, ratione asperiores sit ad quaerat corporis? Voluptates vitae facilis maiores provident laudantium ipsum asperiores magni, eveniet nam vero, debitis saepe, officia perferendis accusamus quia dicta. Voluptate, distinctio qui sed dolorum error quas debitis id cum doloremque quaerat deserunt quia eos! Ipsa nesciunt similique repellat laudantium nihil natus possimus blanditiis. Accusamus, soluta iste! Molestiae vitae odio corrupti laborum sapiente. Ab aut labore eius unde dignissimos fugiat vero sapiente necessitatibus numquam in fuga quas rem ratione quidem, distinctio dicta animi neque'
-                        })}
-                    </li>
-                    <li>
-                        {comment({
-                            user: 'nickk',
-                            star: '8.9',
-                            ctime: '2021/2/2 12:12:12',
-                            comment: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae commodi, placeat magni earum dolor a error voluptatum unde eos ducimus, obcaecati, ratione asperiores sit ad quaerat corporis? Voluptates vitae facilis maiores provident laudantium ipsum asperiores magni, eveniet nam vero, debitis saepe, officia perferendis accusamus quia dicta. Voluptate, distinctio qui sed dolorum error quas debitis id cum doloremque quaerat deserunt quia eos! Ipsa nesciunt similique repellat laudantium nihil natus possimus blanditiis. Accusamus, soluta iste! Molestiae vitae odio corrupti laborum sapiente. Ab aut labore eius unde dignissimos fugiat vero sapiente necessitatibus numquam in fuga quas rem ratione quidem, distinctio dicta animi neque'
-                        })}
-                    </li>
-                    <li>
-                        {comment({
-                            user: 'nickk',
-                            star: '8.9',
-                            ctime: '2021/2/2 12:12:12',
-                            comment: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae commodi, placeat magni earum dolor a error voluptatum unde eos ducimus, obcaecati, ratione asperiores sit ad quaerat corporis? Voluptates vitae facilis maiores provident laudantium ipsum asperiores magni, eveniet nam vero, debitis saepe, officia perferendis accusamus quia dicta. Voluptate, distinctio qui sed dolorum error quas debitis id cum doloremque quaerat deserunt quia eos! Ipsa nesciunt similique repellat laudantium nihil natus possimus blanditiis. Accusamus, soluta iste! Molestiae vitae odio corrupti laborum sapiente. Ab aut labore eius unde dignissimos fugiat vero sapiente necessitatibus numquam in fuga quas rem ratione quidem, distinctio dicta animi neque'
-                        })}
-                    </li>
+                    {commentList.map((it) => {
+                        return (
+                            <li key={it.username}>
+                                {comment({
+                                    user: it.username,
+                                    star: it.star + '.0',
+                                    ctime: format(new Date(it.createdAt), 'yyyy-MM-dd HH:mm:ss'),
+                                    comment: it.content
+                                })}
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
         </div>
