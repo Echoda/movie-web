@@ -52,7 +52,7 @@ export default function MovieList(title) {
     const [list, setList] = useState([]);
     const [cPage, setCPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const order = title === '最近上映' ? 'createdAt' : 'star';
+    const order = title === '最新推荐' ? 'createdAt' : 'star';
 
     useEffect(() => {
         (async () => {

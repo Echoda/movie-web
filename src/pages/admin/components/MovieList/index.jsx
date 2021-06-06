@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Space } from 'antd';
+import { Table, Button, Space, message } from 'antd';
 import { Link } from 'react-router-dom';
-import { getMovieList } from '../../../../services/movie';
+import { deleteMovie, getMovieList } from '../../../../services/movie';
 
-export default function MovieList() {
+export default function MovieList(props) {
     const [movieList, setMovieList] = useState([]);
     const [cPage, setCPage] = useState(1);
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
         (async () => {
-            const res = await getMovieList(cPage, 8);
-            setMovieList(res.data.data.datas);
-            setTotal(res.data.data.total);
+            await getMovies(cPage, 8);
         })();
     }, [cPage])
+
+    const getMovies = async (page, limit) => {
+        const res = await getMovieList(page, limit);
+        setMovieList(res.data.data.datas);
+        setTotal(res.data.data.total);
+    }
+
+    const toDelete = async (id) => {
+        try {
+            await deleteMovie(id);
+            message.success('删除成功')
+            await getMovies(cPage, 8);
+
+        } catch {
+            message.error('删除失败')
+        }
+    }
 
     const columns = [
         {
@@ -56,9 +71,12 @@ export default function MovieList() {
         {
             title: '操作',
             key: 'action',
-            width: 80,
+            width: 120,
             render: (text) => (
-                <Link to={`/admin/movielist/edit/id=${text.id}`}>编辑</Link>
+                <Space>
+                    <Link to={`/admin/movielist/${text.id}`}>编辑</Link>
+                    <a onClick={() => toDelete(text.id)}>删除</a>
+                </Space>
             ),
         },
     ];
@@ -66,6 +84,7 @@ export default function MovieList() {
     return (
         <>
             <h2>影片列表</h2>
+            <Button type="primary" onClick={() => props.history.push('/admin/movielist/add')} style={{ marginBottom: 10 }}>新建</Button>
             <Table
                 dataSource={movieList}
                 columns={columns}

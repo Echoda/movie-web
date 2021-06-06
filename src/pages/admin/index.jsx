@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, Switch, Route } from 'react-router-dom';
 import MovieList from './components/MovieList/index';
 import UserList from './components/UserList/index';
+import EditMovie from './components/EditMovie';
 import './index.less';
 
 export default function Admin() {
@@ -22,7 +23,9 @@ export default function Admin() {
                 </ul>
                 <div className="main">
                     <Switch>
-                        <Route path="/admin/movielist" component={MovieList} />
+                        <Route path="/admin/movielist" exact component={MovieList} />
+                        <Route path="/admin/movielist/add" exact component={EditMovie} />
+                        <Route path="/admin/movielist/:id" exact component={EditMovie} />
                         <Route path="/admin/userlist" component={UserList} />
                     </Switch>
                 </div>

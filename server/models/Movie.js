@@ -30,7 +30,7 @@ const Movie = sequelize.define(
     },
     star: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
