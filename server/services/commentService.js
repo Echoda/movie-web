@@ -1,5 +1,6 @@
 const Comment = require("../models/Comment");
 const User = require("../models/User");
+const {updateStar, getMovieById} = require('./movieService');
 require('../models/relation');
 
 const getUserName = async(it,id) => {
@@ -58,6 +59,18 @@ exports.getComments = async function (
 exports.addComment = async function (commentObj) {
     console.log(commentObj, 'commentobj')
     const ins = await Comment.create(commentObj);
+    // 计算新的评分平均值
+    const starNum = await Comment.count({
+        where: {
+          MovieId: commentObj.MovieId
+        }
+      });
+    const movie = await getMovieById(commentObj.MovieId);
+    // console.log(starNum, movie, movie.star, 'movie');
+    const originAvgStar = movie.star || 0; 
+    const newAvgStar = (+originAvgStar + (+commentObj.star - (+originAvgStar)) / starNum).toFixed(1);
+    await updateStar(newAvgStar, commentObj.MovieId);
+
     return ins.toJSON();
 };
 

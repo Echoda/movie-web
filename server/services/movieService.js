@@ -63,3 +63,12 @@ exports.updateMovie = async function (id, movieObj) {
     return result;
 };
 
+// 更新star
+exports.updateStar = async function (newStar, movieId) {
+    const result = await Movie.update({star: newStar}, {
+        where: {
+            id: movieId
+        }
+    });
+    return result;
+}
