@@ -1,5 +1,6 @@
 const User = require("../models/User");
 // const md5 = require("md5");
+const Comment = require('../models/Comment');
 
 // 获取用户列表
 exports.getUsers = async function (
@@ -47,6 +48,11 @@ exports.deleteUser = async function (userId) {
     const result = await User.destroy({
         where: {
             id: userId,
+        },
+    });
+    await Comment.destroy({
+        where: {
+            UserId: userId,
         },
     });
     return result;

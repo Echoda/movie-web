@@ -26,7 +26,7 @@ exports.getComments = async function (
         order: [
             ['createdAt', 'DESC']
         ],
-        attributes: ['content', 'createdAt', 'UserId', 'star'],
+        // attributes: ['content', 'createdAt', 'UserId', 'star'],
         where: {
             movieId: movieId,
         },
@@ -56,6 +56,7 @@ exports.getComments = async function (
 
 // 增
 exports.addComment = async function (commentObj) {
+    console.log(commentObj, 'commentobj')
     const ins = await Comment.create(commentObj);
     return ins.toJSON();
 };
@@ -67,5 +68,6 @@ exports.deleteComment = async function (commentId) {
             id: commentId,
         },
     });
+
     return result;
 };

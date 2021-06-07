@@ -25,10 +25,14 @@ export default function Comment(props) {
     }, [movieId])
 
     const getCommentList = async (movieId) => {
-        const res = await getMovie(movieId);
-        setMovie(res.data.data);
-        const comRes = await getComments(movieId);
-        setCommentList(comRes.data.data.datas);
+        try {
+            const res = await getMovie(movieId);
+            setMovie(res.data.data);
+            const comRes = await getComments(movieId);
+            setCommentList(comRes.data.data.datas);
+        } catch {
+            message.error('获取评论失败，请稍后重试')
+        }
     }
 
     const comment = ({ user, star, ctime, comment }) => {
@@ -68,10 +72,10 @@ export default function Comment(props) {
         try {
             await createComments(comContent, comStar || 6, movieId, userId);
             message.success('提交成功')
-            getCommentList(movieId);
         } catch {
             message.error('评论失败，请稍后重试');
         }
+        await getCommentList(movieId);
     }
 
     const onStarChange = (val) => {

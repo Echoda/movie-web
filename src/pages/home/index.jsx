@@ -145,7 +145,12 @@ export default function Home(props) {
                 </p>
             </div>
             <div className="main">
-                <Search placeholder="搜索影片" onSearch={(v) => handleSearch(v)} style={{ width: 300, margin: "6px 0 20px 450px" }} className="search" />
+                <Search
+                    placeholder="搜索影片"
+                    onSearch={(v) => handleSearch(v)}
+                    style={{ width: 300, margin: "6px 0 20px 450px" }}
+                    className="search" 
+                />
                 <Switch>
                     <Route path="/home/lasted" exact component={Lasted} />
                     <Route path="/home/favorite" exact component={Favorite} />
