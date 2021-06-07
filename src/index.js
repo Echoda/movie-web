@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Home from './pages/home/index';
 import Admin from './pages/admin/index';
 import Login from './pages/login/index.jsx';
+import Register from './pages/register/index.jsx';
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
             <Switch>
                 <Route path="/home" component={Home} />
                 <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
                 <ProtectedRoute path="/admin" component={Admin} />
             </Switch>
         </Router>

@@ -7,3 +7,7 @@ export const getUserList = (page, limit) => {
 export const deleteUser = (id) => {
     return axios.delete(`/api/user/${id}`)
 }
+
+export const addUser = (obj) => {
+    return axios.post(`/api/user`, obj);
+}

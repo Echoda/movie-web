@@ -79,7 +79,7 @@ export default function Login(props) {
                     登录
                 </Button>
             </Form.Item>
-            {/* <a href="jacascript:;">没有账号？去注册</a> */}
+            <a href="/register">没有账号？去注册</a>
         </Form>
     )
 }
